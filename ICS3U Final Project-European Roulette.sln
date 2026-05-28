@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35507.96 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICS3U Final Project-European Roulette", "ICS3U Final Project-European Roulette\ICS3U Final Project-European Roulette.csproj", "{AE78ADCF-3712-4FA5-A75C-5F22D12F6DBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE78ADCF-3712-4FA5-A75C-5F22D12F6DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE78ADCF-3712-4FA5-A75C-5F22D12F6DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE78ADCF-3712-4FA5-A75C-5F22D12F6DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE78ADCF-3712-4FA5-A75C-5F22D12F6DBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C6DE5A4A-A9D4-4080-9173-133630F127AD}
+	EndGlobalSection
+EndGlobal
