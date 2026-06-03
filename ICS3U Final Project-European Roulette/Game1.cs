@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic.FileIO;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,6 +11,10 @@ namespace ICS3U_Final_Project_European_Roulette
         private SpriteBatch _spriteBatch;
 
         Rectangle window;
+
+        Texture2D introTexture;
+
+        Rectangle introRect;
 
         MouseState mouseState;
 
@@ -29,6 +34,8 @@ namespace ICS3U_Final_Project_European_Roulette
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
+
+            introRect = new Rectangle(0, 0, 950, 600);
 
             base.Initialize();
         }
@@ -52,7 +59,11 @@ namespace ICS3U_Final_Project_European_Roulette
             mouseState = Mouse.GetState();
 
             this.Window.Title = mouseState.Position.ToString();
-            
+
+            introTexture = Content.Load<Texture2D>("intro");
+
+
+
 
             base.Update(gameTime);
         }
@@ -62,6 +73,12 @@ namespace ICS3U_Final_Project_European_Roulette
             GraphicsDevice.Clear(Color.SeaGreen);
 
             // TODO: Add your drawing code here
+
+            _spriteBatch.Begin();
+
+            _spriteBatch.Draw(introTexture, introRect, Color.White);
+
+            _spriteBatch.End();
 
 
 
