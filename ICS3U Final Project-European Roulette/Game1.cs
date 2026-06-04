@@ -9,7 +9,8 @@ namespace ICS3U_Final_Project_European_Roulette
         enum Screen
         {
             Intro,
-            Letter
+            Letter,
+            BlackwoodCastle
         }
 
         Screen currentScreen;
@@ -19,16 +20,21 @@ namespace ICS3U_Final_Project_European_Roulette
 
         Rectangle window;
 
-        // Textures
+        // screens
         Texture2D introTexture;
         Texture2D letterTexture;
-
+        Texture2D blackwoodcastleTexture;
+       
         Rectangle introRect;
         Rectangle letterRect;
+        Rectangle blackwoodcastleRect;
 
         // Buttons
         Texture2D beginthenightTexture;
         Rectangle beginthenightRect;
+
+        Texture2D blackwoodcastlebtnTexture;
+        Rectangle blackwoodcastlebtnRect;
 
         Texture2D stepoutsideTexture;
         Rectangle stepoutsideRect;
@@ -54,9 +60,12 @@ namespace ICS3U_Final_Project_European_Roulette
 
             introRect = new Rectangle(0, 0, 950, 600);
             letterRect = new Rectangle(0, 0, 950, 600);
+            blackwoodcastleRect =new Rectangle(0, 0, 950, 600);
 
-            beginthenightRect = new Rectangle(600, 120, 325, 115);
-            stepoutsideRect = new Rectangle(600, 260, 325, 115);
+            beginthenightRect = new Rectangle(600, 50, 325, 115);
+            stepoutsideRect = new Rectangle(600, 170, 325, 115);
+            blackwoodcastlebtnRect = new Rectangle(600, 290, 325, 140);
+          
 
             base.Initialize();
         }
@@ -67,9 +76,12 @@ namespace ICS3U_Final_Project_European_Roulette
 
             introTexture = Content.Load<Texture2D>("intro");
             letterTexture = Content.Load<Texture2D>("letter");
+            blackwoodcastleTexture = Content.Load<Texture2D>("blackwood castle");
 
             beginthenightTexture = Content.Load<Texture2D>("begin the night");
             stepoutsideTexture = Content.Load<Texture2D>("step outside");
+            blackwoodcastlebtnTexture = Content.Load<Texture2D>("blackwood castlebtn");
+            
         }
 
         protected override void Update(GameTime gameTime)
@@ -93,8 +105,15 @@ namespace ICS3U_Final_Project_European_Roulette
                    
                     if (stepoutsideRect.Contains(mouseState.Position))
                     {
-                        Exit();
+                        Exit();   
                     }
+
+
+                    if (blackwoodcastlebtnRect.Contains(mouseState.Position))
+                    {
+                        currentScreen = Screen.BlackwoodCastle;
+                    }
+
                 }
             }
 
@@ -112,10 +131,17 @@ namespace ICS3U_Final_Project_European_Roulette
                 _spriteBatch.Draw(introTexture, introRect, Color.White);
                 _spriteBatch.Draw(beginthenightTexture, beginthenightRect, Color.White);
                 _spriteBatch.Draw(stepoutsideTexture, stepoutsideRect, Color.White);
+                _spriteBatch.Draw(blackwoodcastlebtnTexture, blackwoodcastlebtnRect, Color.White);
             }
             else if (currentScreen == Screen.Letter)
             {
                 _spriteBatch.Draw(letterTexture, letterRect, Color.White);
+            }
+
+            else if (currentScreen == Screen.BlackwoodCastle)
+            {
+                _spriteBatch.Draw(blackwoodcastleTexture, blackwoodcastleRect, Color.White);
+
             }
 
             _spriteBatch.End();
