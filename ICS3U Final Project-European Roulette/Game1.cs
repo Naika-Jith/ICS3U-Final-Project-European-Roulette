@@ -32,6 +32,7 @@ namespace ICS3U_Final_Project_European_Roulette
         int currentBet = 0;
 
         bool showCard = false;
+        bool hasBet = false;
 
         int cardValue;
 
@@ -233,40 +234,69 @@ namespace ICS3U_Final_Project_European_Roulette
                     if (bet20Rect.Contains(mouseState.Position))
                     {
                         currentBet = 20;
+                        hasBet = true;
                     }
 
                     if (bet40Rect.Contains(mouseState.Position))
                     {
                         currentBet = 40;
+                        hasBet = true;
                     }
 
                     if (bet100Rect.Contains(mouseState.Position))
                     {
-                        currentBet = 100;    
-              
+                        currentBet = 100;
+                        hasBet = true;
                     }
 
                     if (highRect.Contains(mouseState.Position))
                     {
-                        int randomCard = rng.Next(0, 36);
-
-                        shownCard = cards[randomCard];
-
-                        cardValue = (randomCard % 9) + 2;
-
-                        showCard = true;
-
-                        if (cardValue >= 6)
+                        if (hasBet && highRect.Contains(mouseState.Position))
                         {
-                            money = money + currentBet;
+                            int randomCard = rng.Next(0, 36);
+
+                            shownCard = cards[randomCard];  //Picks one random card image from the deck and display it
+                            showCard = true;
+
+                            cardValue = (randomCard % 9) + 2; // Determines card value from 2-10
+
+                            if (cardValue >= 6)
+                            {
+                                money += currentBet;
+                            }
+                            else
+                            {
+                                money -= currentBet;
+                            }
+
+                            hasBet = false;
                         }
-                        else
-                        {
-                            money = money - currentBet;
-                        }
+
                     }
 
+                    if (lowRect.Contains(mouseState.Position))
+                    {
+                        if (hasBet && lowRect.Contains(mouseState.Position))
+                        {
+                            int randomCard = rng.Next(0, 36);
 
+                            shownCard = cards[randomCard]; //Picks one random card image from the deck and display it
+                            showCard = true;
+
+                            cardValue = (randomCard % 9) + 2; // Determines card value from 2-10
+
+                            if (cardValue <= 5)
+                            {
+                                money += currentBet;
+                            }
+                            else
+                            {
+                                money -= currentBet;
+                            }
+
+                            hasBet = false;
+                        }
+                    }
 
                 }
        
@@ -312,6 +342,12 @@ namespace ICS3U_Final_Project_European_Roulette
                 // high low buttons
                 _spriteBatch.Draw(highTexture, highRect, Color.White);
                 _spriteBatch.Draw(lowTexture, lowRect, Color.White);
+
+                //Bet
+
+                _spriteBatch.DrawString( font,"Money: $" + money, new Vector2(20, 500),Color.Gold);
+
+                _spriteBatch.DrawString(font, "Bet: $" + currentBet, new Vector2(20, 540), Color.White);
             }
 
             else if (currentScreen == Screen.BlackwoodCastle) //Description
