@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace ICS3U_Final_Project_European_Roulette
 {
@@ -21,7 +22,9 @@ namespace ICS3U_Final_Project_European_Roulette
 
         Rectangle window;
 
-        Texture2D[] cards = new Texture2D[36];
+      
+
+        List<Texture2D> Cards;
 
         Texture2D shownCard;
 
@@ -147,48 +150,55 @@ namespace ICS3U_Final_Project_European_Roulette
 
             //Cards
 
+            Cards = new List<Texture2D>();
+
             cardBackTexture = Content.Load<Texture2D>("card_back");
-            cards[0] = Content.Load<Texture2D>("card_clubs_02");
-            cards[1] = Content.Load<Texture2D>("card_clubs_03");
-            cards[2] = Content.Load<Texture2D>("card_clubs_04");
-            cards[3] = Content.Load<Texture2D>("card_clubs_05");
-            cards[4] = Content.Load<Texture2D>("card_clubs_06");
-            cards[5] = Content.Load<Texture2D>("card_clubs_07");
-            cards[6] = Content.Load<Texture2D>("card_clubs_08");
-            cards[7] = Content.Load<Texture2D>("card_clubs_09");
-            cards[8] = Content.Load<Texture2D>("card_clubs_10");
 
-            cards[9] = Content.Load<Texture2D>("card_diamonds_02");
-            cards[10] = Content.Load<Texture2D>("card_diamonds_03");
-            cards[11] = Content.Load<Texture2D>("card_diamonds_04");
-            cards[12] = Content.Load<Texture2D>("card_diamonds_05");
-            cards[13] = Content.Load<Texture2D>("card_diamonds_06");
-            cards[14] = Content.Load<Texture2D>("card_diamonds_07");
-            cards[15] = Content.Load<Texture2D>("card_diamonds_08");
-            cards[16] = Content.Load<Texture2D>("card_diamonds_09");
-            cards[17] = Content.Load<Texture2D>("card_diamonds_10");
+            // Clubs
+            Cards.Add(Content.Load<Texture2D>("card_clubs_02"));
+            Cards.Add(Content.Load<Texture2D>("card_clubs_03"));
+            Cards.Add(Content.Load<Texture2D>("card_clubs_04"));
+            Cards.Add(Content.Load<Texture2D>("card_clubs_05"));
+            Cards.Add(Content.Load<Texture2D>("card_clubs_06"));
+            Cards.Add(Content.Load<Texture2D>("card_clubs_07"));
+            Cards.Add(Content.Load<Texture2D>("card_clubs_08"));
+            Cards.Add(Content.Load<Texture2D>("card_clubs_09"));
+            Cards.Add(Content.Load<Texture2D>("card_clubs_10"));
 
-            cards[18] = Content.Load<Texture2D>("card_hearts_02");
-            cards[19] = Content.Load<Texture2D>("card_hearts_03");
-            cards[20] = Content.Load<Texture2D>("card_hearts_04");
-            cards[21] = Content.Load<Texture2D>("card_hearts_05");
-            cards[22] = Content.Load<Texture2D>("card_hearts_06");
-            cards[23] = Content.Load<Texture2D>("card_hearts_07");
-            cards[24] = Content.Load<Texture2D>("card_hearts_08");
-            cards[25] = Content.Load<Texture2D>("card_hearts_09");
-            cards[26] = Content.Load<Texture2D>("card_hearts_10");
+            // Diamonds
+            Cards.Add(Content.Load<Texture2D>("card_diamonds_02"));
+            Cards.Add(Content.Load<Texture2D>("card_diamonds_03"));
+            Cards.Add(Content.Load<Texture2D>("card_diamonds_04"));
+            Cards.Add(Content.Load<Texture2D>("card_diamonds_05"));
+            Cards.Add(Content.Load<Texture2D>("card_diamonds_06"));
+            Cards.Add(Content.Load<Texture2D>("card_diamonds_07"));
+            Cards.Add(Content.Load<Texture2D>("card_diamonds_08"));
+            Cards.Add(Content.Load<Texture2D>("card_diamonds_09"));
+            Cards.Add(Content.Load<Texture2D>("card_diamonds_10"));
 
-            cards[27] = Content.Load<Texture2D>("card_spades_02");
-            cards[28] = Content.Load<Texture2D>("card_spades_03");
-            cards[29] = Content.Load<Texture2D>("card_spades_04");
-            cards[30] = Content.Load<Texture2D>("card_spades_05");
-            cards[31] = Content.Load<Texture2D>("card_spades_06");
-            cards[32] = Content.Load<Texture2D>("card_spades_07");
-            cards[33] = Content.Load<Texture2D>("card_spades_08");
-            cards[34] = Content.Load<Texture2D>("card_spades_09");
-            cards[35] = Content.Load<Texture2D>("card_spades_10");
+            // Hearts
+            Cards.Add(Content.Load<Texture2D>("card_hearts_02"));
+            Cards.Add(Content.Load<Texture2D>("card_hearts_03"));
+            Cards.Add(Content.Load<Texture2D>("card_hearts_04"));
+            Cards.Add(Content.Load<Texture2D>("card_hearts_05"));
+            Cards.Add(Content.Load<Texture2D>("card_hearts_06"));
+            Cards.Add(Content.Load<Texture2D>("card_hearts_07"));
+            Cards.Add(Content.Load<Texture2D>("card_hearts_08"));
+            Cards.Add(Content.Load<Texture2D>("card_hearts_09"));
+            Cards.Add(Content.Load<Texture2D>("card_hearts_10"));
 
-            shownCard = cards[rng.Next(0, 36)]; // pick a cards from all 36
+            // Spades
+            Cards.Add(Content.Load<Texture2D>("card_spades_02"));
+            Cards.Add(Content.Load<Texture2D>("card_spades_03"));
+            Cards.Add(Content.Load<Texture2D>("card_spades_04"));
+            Cards.Add(Content.Load<Texture2D>("card_spades_05"));
+            Cards.Add(Content.Load<Texture2D>("card_spades_06"));
+            Cards.Add(Content.Load<Texture2D>("card_spades_07"));
+            Cards.Add(Content.Load<Texture2D>("card_spades_08"));
+            Cards.Add(Content.Load<Texture2D>("card_spades_09"));
+            Cards.Add(Content.Load<Texture2D>("card_spades_10"));
+
+            shownCard = Cards[rng.Next(Cards.Count)];
         }
 
         protected override void Update(GameTime gameTime)
@@ -237,13 +247,13 @@ namespace ICS3U_Final_Project_European_Roulette
                         hasBet = true;
                     }
 
-                    if (bet40Rect.Contains(mouseState.Position))
+                    else if (bet40Rect.Contains(mouseState.Position))
                     {
                         currentBet = 40;
                         hasBet = true;
                     }
 
-                    if (bet100Rect.Contains(mouseState.Position))
+                    else if (bet100Rect.Contains(mouseState.Position))
                     {
                         currentBet = 100;
                         hasBet = true;
@@ -255,10 +265,9 @@ namespace ICS3U_Final_Project_European_Roulette
                         {
                             int randomCard = rng.Next(0, 36);
 
-                            shownCard = cards[randomCard];  //Picks one random card image from the deck and display it
+                            shownCard = Cards[randomCard];  //Picks one random card image from the deck and display it
                             showCard = true;
-
-                            cardValue = (randomCard % 9) + 2; // Determines card value from 2-10
+                            cardValue = randomCard % 9 + 2;
 
                             if (cardValue >= 6)
                             {
@@ -280,10 +289,8 @@ namespace ICS3U_Final_Project_European_Roulette
                         {
                             int randomCard = rng.Next(0, 36);
 
-                            shownCard = cards[randomCard]; //Picks one random card image from the deck and display it
+                            shownCard = Cards[randomCard]; //Picks one random card image from the deck and display it
                             showCard = true;
-
-                            cardValue = (randomCard % 9) + 2; // Determines card value from 2-10
 
                             if (cardValue <= 5)
                             {
