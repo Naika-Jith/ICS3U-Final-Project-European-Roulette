@@ -12,7 +12,8 @@ namespace ICS3U_Final_Project_European_Roulette
         {
             Intro,
             BlackwoodCastle,
-            Main
+            Main,
+            Howtoplay
         }
 
         Screen currentScreen;
@@ -45,10 +46,12 @@ namespace ICS3U_Final_Project_European_Roulette
         Texture2D introTexture;
         Texture2D blackwoodcastleTexture;
         Texture2D mainTexture;
+        Texture2D howtoplayTexture;
        
         Rectangle introRect;
         Rectangle blackwoodcastleRect;
         Rectangle mainRect;
+        Rectangle howtoplayRect;
 
         // Buttons
         Texture2D beginthenightTexture;
@@ -79,6 +82,9 @@ namespace ICS3U_Final_Project_European_Roulette
         Texture2D cardBackTexture;
         Rectangle cardRect;
 
+        Texture2D cardFrameTexture;
+        Rectangle cardFrameRect;
+
 
         MouseState mouseState;
 
@@ -101,6 +107,7 @@ namespace ICS3U_Final_Project_European_Roulette
 
             introRect = new Rectangle(0, 0, 950, 600); 
             blackwoodcastleRect =new Rectangle(0, 0, 950, 600);
+            howtoplayRect = new Rectangle(0, 0, 950, 600);
             mainRect = new Rectangle(0, 0, 950, 600);
 
 
@@ -121,7 +128,7 @@ namespace ICS3U_Final_Project_European_Roulette
             // buttons under card
             highRect = new Rectangle(70, 300, 500, 450);
             lowRect = new Rectangle(260, 190, 500, 450);
-
+            cardFrameRect = new Rectangle(405, 115, 193, 309);
 
             base.Initialize();
         }
@@ -133,6 +140,7 @@ namespace ICS3U_Final_Project_European_Roulette
             introTexture = Content.Load<Texture2D>("intro");
             blackwoodcastleTexture = Content.Load<Texture2D>("blackwood castle");
             mainTexture = Content.Load<Texture2D>("main");
+            howtoplayTexture = Content.Load<Texture2D>("howtoplay");
 
             beginthenightTexture = Content.Load<Texture2D>("begin the night");
             stepoutsideTexture = Content.Load<Texture2D>("step outside");
@@ -153,6 +161,7 @@ namespace ICS3U_Final_Project_European_Roulette
             Cards = new List<Texture2D>();
 
             cardBackTexture = Content.Load<Texture2D>("card_back");
+            cardFrameTexture = Content.Load<Texture2D>("card_frame");
 
             // Clubs
             Cards.Add(Content.Load<Texture2D>("card_clubs_02"));
@@ -191,7 +200,7 @@ namespace ICS3U_Final_Project_European_Roulette
             Cards.Add(Content.Load<Texture2D>("card_spades_02"));
             Cards.Add(Content.Load<Texture2D>("card_spades_03"));
             Cards.Add(Content.Load<Texture2D>("card_spades_04"));
-            Cards.Add(Content.Load<Texture2D>("card_spades_05"));
+            Cards.Add(Content.Load<Texture2D>("card_spades_05")); 
             Cards.Add(Content.Load<Texture2D>("card_spades_06"));
             Cards.Add(Content.Load<Texture2D>("card_spades_07"));
             Cards.Add(Content.Load<Texture2D>("card_spades_08"));
@@ -224,7 +233,7 @@ namespace ICS3U_Final_Project_European_Roulette
                    
                     if (stepoutsideRect.Contains(mouseState.Position))
                     {
-                        Exit();   
+                        currentScreen = Screen.Howtoplay;
                     }
 
 
@@ -269,7 +278,11 @@ namespace ICS3U_Final_Project_European_Roulette
                             showCard = true;
                             cardValue = randomCard % 9 + 2;
 
-                            if (cardValue >= 6)
+                            if (cardValue == 6)
+                            {
+                                money -= currentBet; 
+                            }
+                            else if (cardValue > 6) 
                             {
                                 money += currentBet;
                             }
@@ -291,8 +304,13 @@ namespace ICS3U_Final_Project_European_Roulette
 
                             shownCard = Cards[randomCard]; //Picks one random card image from the deck and display it
                             showCard = true;
+                            cardValue = randomCard % 9 + 2;
 
-                            if (cardValue <= 5)
+                            if (cardValue == 6)
+                            {
+                                money -= currentBet; 
+                            }
+                            else if (cardValue < 6) 
                             {
                                 money += currentBet;
                             }
@@ -338,6 +356,8 @@ namespace ICS3U_Final_Project_European_Roulette
                 _spriteBatch.Draw(bet100Texture, bet100Rect, Color.White);
 
                 // card
+
+
                 if (showCard == false)
                 {
                     _spriteBatch.Draw(cardBackTexture, cardRect, Color.White);
@@ -355,12 +375,19 @@ namespace ICS3U_Final_Project_European_Roulette
                 _spriteBatch.DrawString( font,"Money: $" + money, new Vector2(20, 500),Color.Gold);
 
                 _spriteBatch.DrawString(font, "Bet: $" + currentBet, new Vector2(20, 540), Color.White);
+
+                _spriteBatch.Draw(cardFrameTexture, cardFrameRect, Color.White);
             }
 
             else if (currentScreen == Screen.BlackwoodCastle) //Description
             {
                 _spriteBatch.Draw(blackwoodcastleTexture, blackwoodcastleRect, Color.White);
 
+            }
+
+            else if (currentScreen == Screen.Howtoplay)
+            {
+                _spriteBatch.Draw(howtoplayTexture, howtoplayRect, Color.White);
             }
 
             _spriteBatch.End();
