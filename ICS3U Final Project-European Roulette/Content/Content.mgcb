@@ -572,6 +572,18 @@
 /processorParam:TextureFormat=Compressed
 /build:font.spritefont
 
+#begin goback.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:goback.png
+
 #begin high.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -608,6 +620,18 @@
 /processorParam:TextureFormat=Color
 /build:intro.png
 
+#begin invitation.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:invitation.png
+
 #begin letter.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -643,6 +667,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:main.png
+
+#begin proceed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:proceed.png
 
 #begin step outside.png
 /importer:TextureImporter

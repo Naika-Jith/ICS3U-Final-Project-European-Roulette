@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Net.WebSockets;
 
 namespace ICS3U_Final_Project_European_Roulette
 {
@@ -13,7 +14,10 @@ namespace ICS3U_Final_Project_European_Roulette
             Intro,
             BlackwoodCastle,
             Main,
-            Howtoplay
+            Howtoplay,
+            Letter,
+            Ballroom
+            
         }
 
         Screen currentScreen;
@@ -47,12 +51,17 @@ namespace ICS3U_Final_Project_European_Roulette
         Texture2D blackwoodcastleTexture;
         Texture2D mainTexture;
         Texture2D howtoplayTexture;
+        Texture2D letterTexture;
+        Texture2D ballroomTexture;
+       
        
         Rectangle introRect;
         Rectangle blackwoodcastleRect;
         Rectangle mainRect;
         Rectangle howtoplayRect;
-
+        Rectangle letterRect;
+        Rectangle ballroomRect;
+        
         // Buttons
         Texture2D beginthenightTexture;
         Rectangle beginthenightRect;
@@ -78,6 +87,12 @@ namespace ICS3U_Final_Project_European_Roulette
         Rectangle highRect;
         Rectangle lowRect;
 
+        Texture2D gobackTexture;
+        Rectangle gobackRect;
+
+        Texture2D proceedTexture;
+        Rectangle proceedRect;
+
         //Cards
         Texture2D cardBackTexture;
         Rectangle cardRect;
@@ -85,8 +100,12 @@ namespace ICS3U_Final_Project_European_Roulette
         Texture2D cardFrameTexture;
         Rectangle cardFrameRect;
 
-
         MouseState mouseState;
+        MouseState previousMouse;
+
+        //Other
+        Texture2D invitationTexture;
+        Rectangle invitationRect;
 
         public Game1()
         {
@@ -109,11 +128,16 @@ namespace ICS3U_Final_Project_European_Roulette
             blackwoodcastleRect =new Rectangle(0, 0, 950, 600);
             howtoplayRect = new Rectangle(0, 0, 950, 600);
             mainRect = new Rectangle(0, 0, 950, 600);
+            letterRect = new Rectangle(0, 0, 950, 600);
+            ballroomRect = new Rectangle(0, 0, 950, 600);
+          
 
 
             beginthenightRect = new Rectangle(600, 50, 325, 115);
             stepoutsideRect = new Rectangle(600, 170, 325, 115);
-            blackwoodcastlebtnRect = new Rectangle(600, 290, 325, 140);
+            blackwoodcastlebtnRect = new Rectangle(600, 280, 325, 140);
+            gobackRect = new Rectangle(23, 14, 325, 115);
+            proceedRect = new Rectangle(23, 14, 325, 115);
 
             //Main Game
 
@@ -130,6 +154,9 @@ namespace ICS3U_Final_Project_European_Roulette
             lowRect = new Rectangle(260, 190, 500, 450);
             cardFrameRect = new Rectangle(405, 115, 193, 309);
 
+            //Other
+            invitationRect = new Rectangle(0, 0, 950, 600);
+
             base.Initialize();
         }
 
@@ -141,10 +168,15 @@ namespace ICS3U_Final_Project_European_Roulette
             blackwoodcastleTexture = Content.Load<Texture2D>("blackwood castle");
             mainTexture = Content.Load<Texture2D>("main");
             howtoplayTexture = Content.Load<Texture2D>("howtoplay");
+            letterTexture = Content.Load<Texture2D>("letter");
+            ballroomTexture = Content.Load<Texture2D>("ballroom");
+          
 
             beginthenightTexture = Content.Load<Texture2D>("begin the night");
             stepoutsideTexture = Content.Load<Texture2D>("step outside");
             blackwoodcastlebtnTexture = Content.Load<Texture2D>("blackwood castlebtn");
+            gobackTexture = Content.Load<Texture2D>("goback");
+            proceedTexture = Content.Load<Texture2D>("proceed");
 
             bet20Texture = Content.Load<Texture2D>("bet20");
             bet40Texture = Content.Load<Texture2D>("bet40");
@@ -153,8 +185,12 @@ namespace ICS3U_Final_Project_European_Roulette
             highTexture = Content.Load<Texture2D>("high");
             lowTexture = Content.Load<Texture2D>("low");
 
+
             //font
             font = Content.Load<SpriteFont>("font");
+
+            //Other
+            invitationTexture = Content.Load<Texture2D>("invitation");
 
             //Cards
 
@@ -212,26 +248,26 @@ namespace ICS3U_Final_Project_European_Roulette
 
         protected override void Update(GameTime gameTime)
         {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            previousMouse = mouseState;
             mouseState = Mouse.GetState();
 
             this.Window.Title = mouseState.Position.ToString();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-           
             if (currentScreen == Screen.Intro)
             {
-                if (mouseState.LeftButton == ButtonState.Pressed)
+                if (mouseState.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Released)
                 {
-                  
+
                     if (beginthenightRect.Contains(mouseState.Position))
                     {
-                        currentScreen = Screen.Main;
+                        currentScreen = Screen.Letter;
                     }
 
-                   
-                    if (stepoutsideRect.Contains(mouseState.Position))
+
+                    if (stepoutsideRect.Contains(mouseState.Position)) // Had to switch from step outside to How to Play
                     {
                         currentScreen = Screen.Howtoplay;
                     }
@@ -243,10 +279,42 @@ namespace ICS3U_Final_Project_European_Roulette
                     }
 
                 }
-            
+
             }
 
-            if (currentScreen == Screen.Main)
+            else if (currentScreen == Screen.BlackwoodCastle)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed & previousMouse.LeftButton == ButtonState.Released && gobackRect.Contains(mouseState.Position))
+                {
+                    currentScreen = Screen.Intro;
+                }  
+            }
+
+            else if (currentScreen == Screen.Howtoplay)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed & previousMouse.LeftButton == ButtonState.Released && gobackRect.Contains(mouseState.Position))
+                {
+                    currentScreen = Screen.Intro;
+                }
+            }
+
+            else if (currentScreen == Screen.Letter)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed & previousMouse.LeftButton == ButtonState.Released && proceedRect.Contains(mouseState.Position))
+                {
+                    currentScreen = Screen.Ballroom;
+                }
+            }
+
+            else if (currentScreen == Screen.Ballroom)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed & previousMouse.LeftButton == ButtonState.Released && proceedRect.Contains(mouseState.Position))
+                {
+                    currentScreen = Screen.Main;
+                }
+            }
+
+            else if (currentScreen == Screen.Main)
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
@@ -280,9 +348,9 @@ namespace ICS3U_Final_Project_European_Roulette
 
                             if (cardValue == 6)
                             {
-                                money -= currentBet; 
+                                money -= currentBet;
                             }
-                            else if (cardValue > 6) 
+                            else if (cardValue > 6)
                             {
                                 money += currentBet;
                             }
@@ -308,9 +376,9 @@ namespace ICS3U_Final_Project_European_Roulette
 
                             if (cardValue == 6)
                             {
-                                money -= currentBet; 
+                                money -= currentBet;
                             }
-                            else if (cardValue < 6) 
+                            else if (cardValue < 6)
                             {
                                 money += currentBet;
                             }
@@ -323,14 +391,21 @@ namespace ICS3U_Final_Project_European_Roulette
                         }
                     }
 
+
                 }
-       
-            
-            
-            
+
+
+
+
+
             }
 
-                base.Update(gameTime);
+
+
+
+
+
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -346,6 +421,20 @@ namespace ICS3U_Final_Project_European_Roulette
                 _spriteBatch.Draw(stepoutsideTexture, stepoutsideRect, Color.White);
                 _spriteBatch.Draw(blackwoodcastlebtnTexture, blackwoodcastlebtnRect, Color.White);
             }
+
+            else if (currentScreen == Screen.Letter)
+            {
+                _spriteBatch.Draw(letterTexture, letterRect, Color.White);
+                _spriteBatch.Draw(invitationTexture, invitationRect, Color.White);
+                _spriteBatch.Draw(proceedTexture, proceedRect, Color.White);               
+            }
+
+            else if (currentScreen == Screen.Ballroom)
+            {
+                _spriteBatch.Draw(ballroomTexture, ballroomRect, Color.White);
+                _spriteBatch.Draw(proceedTexture, proceedRect, Color.White);
+            }
+
             else if (currentScreen == Screen.Main)
             {
                 _spriteBatch.Draw(mainTexture, mainRect, Color.White);
@@ -356,7 +445,6 @@ namespace ICS3U_Final_Project_European_Roulette
                 _spriteBatch.Draw(bet100Texture, bet100Rect, Color.White);
 
                 // card
-
 
                 if (showCard == false)
                 {
@@ -379,16 +467,20 @@ namespace ICS3U_Final_Project_European_Roulette
                 _spriteBatch.Draw(cardFrameTexture, cardFrameRect, Color.White);
             }
 
-            else if (currentScreen == Screen.BlackwoodCastle) //Description
-            {
-                _spriteBatch.Draw(blackwoodcastleTexture, blackwoodcastleRect, Color.White);
-
-            }
-
+        
             else if (currentScreen == Screen.Howtoplay)
             {
                 _spriteBatch.Draw(howtoplayTexture, howtoplayRect, Color.White);
+                _spriteBatch.Draw(gobackTexture, gobackRect, Color.White);
             }
+
+            else if (currentScreen == Screen.BlackwoodCastle) //Description
+            {
+                _spriteBatch.Draw(blackwoodcastleTexture, blackwoodcastleRect, Color.White);
+                _spriteBatch.Draw(gobackTexture, gobackRect, Color.White);
+            }
+
+
 
             _spriteBatch.End();
 
