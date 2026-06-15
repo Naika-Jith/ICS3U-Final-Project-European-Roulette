@@ -1,9 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Net.WebSockets;
 
 namespace ICS3U_Final_Project_European_Roulette
 {
@@ -16,8 +15,8 @@ namespace ICS3U_Final_Project_European_Roulette
             Main,
             Howtoplay,
             Letter,
-            Ballroom
-            
+            Ballroom,
+            Exit
         }
 
         Screen currentScreen;
@@ -27,7 +26,7 @@ namespace ICS3U_Final_Project_European_Roulette
 
         Rectangle window;
 
-      
+
 
         List<Texture2D> Cards;
 
@@ -53,15 +52,17 @@ namespace ICS3U_Final_Project_European_Roulette
         Texture2D howtoplayTexture;
         Texture2D letterTexture;
         Texture2D ballroomTexture;
-       
-       
+        Texture2D exitTexture;
+
+
         Rectangle introRect;
         Rectangle blackwoodcastleRect;
         Rectangle mainRect;
         Rectangle howtoplayRect;
         Rectangle letterRect;
         Rectangle ballroomRect;
-        
+        Rectangle exitRect;
+
         // Buttons
         Texture2D beginthenightTexture;
         Rectangle beginthenightRect;
@@ -103,6 +104,10 @@ namespace ICS3U_Final_Project_European_Roulette
         MouseState mouseState;
         MouseState previousMouse;
 
+        // Riddles
+        Texture2D riddle1Texture;
+        Rectangle riddle1Rect;
+
         //Other
         Texture2D invitationTexture;
         Rectangle invitationRect;
@@ -124,20 +129,25 @@ namespace ICS3U_Final_Project_European_Roulette
 
             currentScreen = Screen.Intro;
 
-            introRect = new Rectangle(0, 0, 950, 600); 
-            blackwoodcastleRect =new Rectangle(0, 0, 950, 600);
+            introRect = new Rectangle(0, 0, 950, 600);
+            blackwoodcastleRect = new Rectangle(0, 0, 950, 600);
             howtoplayRect = new Rectangle(0, 0, 950, 600);
             mainRect = new Rectangle(0, 0, 950, 600);
             letterRect = new Rectangle(0, 0, 950, 600);
             ballroomRect = new Rectangle(0, 0, 950, 600);
-          
+            exitRect = new Rectangle(0, 0, 950, 600);
+
 
 
             beginthenightRect = new Rectangle(600, 50, 325, 115);
             stepoutsideRect = new Rectangle(600, 170, 325, 115);
             blackwoodcastlebtnRect = new Rectangle(600, 280, 325, 140);
             gobackRect = new Rectangle(23, 14, 325, 115);
-            proceedRect = new Rectangle(23, 14, 325, 115);
+            proceedRect = new Rectangle(625, 0, 325, 115);
+
+            //Riddles
+
+            riddle1Rect = new Rectangle(119, 100, 700, 290);
 
             //Main Game
 
@@ -155,7 +165,7 @@ namespace ICS3U_Final_Project_European_Roulette
             cardFrameRect = new Rectangle(405, 115, 193, 309);
 
             //Other
-            invitationRect = new Rectangle(0, 0, 950, 600);
+            invitationRect = new Rectangle(0, 0, 670, 500);
 
             base.Initialize();
         }
@@ -170,7 +180,8 @@ namespace ICS3U_Final_Project_European_Roulette
             howtoplayTexture = Content.Load<Texture2D>("howtoplay");
             letterTexture = Content.Load<Texture2D>("letter");
             ballroomTexture = Content.Load<Texture2D>("ballroom");
-          
+            exitTexture = Content.Load<Texture2D>("exit");
+
 
             beginthenightTexture = Content.Load<Texture2D>("begin the night");
             stepoutsideTexture = Content.Load<Texture2D>("step outside");
@@ -185,6 +196,9 @@ namespace ICS3U_Final_Project_European_Roulette
             highTexture = Content.Load<Texture2D>("high");
             lowTexture = Content.Load<Texture2D>("low");
 
+            //Riddles
+
+            riddle1Texture = Content.Load<Texture2D>("riddle1");
 
             //font
             font = Content.Load<SpriteFont>("font");
@@ -236,7 +250,7 @@ namespace ICS3U_Final_Project_European_Roulette
             Cards.Add(Content.Load<Texture2D>("card_spades_02"));
             Cards.Add(Content.Load<Texture2D>("card_spades_03"));
             Cards.Add(Content.Load<Texture2D>("card_spades_04"));
-            Cards.Add(Content.Load<Texture2D>("card_spades_05")); 
+            Cards.Add(Content.Load<Texture2D>("card_spades_05"));
             Cards.Add(Content.Load<Texture2D>("card_spades_06"));
             Cards.Add(Content.Load<Texture2D>("card_spades_07"));
             Cards.Add(Content.Load<Texture2D>("card_spades_08"));
@@ -287,7 +301,7 @@ namespace ICS3U_Final_Project_European_Roulette
                 if (mouseState.LeftButton == ButtonState.Pressed & previousMouse.LeftButton == ButtonState.Released && gobackRect.Contains(mouseState.Position))
                 {
                     currentScreen = Screen.Intro;
-                }  
+                }
             }
 
             else if (currentScreen == Screen.Howtoplay)
@@ -318,27 +332,27 @@ namespace ICS3U_Final_Project_European_Roulette
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    if (bet20Rect.Contains(mouseState.Position))
+                    if (mouseState.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Released && bet20Rect.Contains(mouseState.Position))
                     {
                         currentBet = 20;
                         hasBet = true;
                     }
 
-                    else if (bet40Rect.Contains(mouseState.Position))
+                    else if (mouseState.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Released && bet40Rect.Contains(mouseState.Position))
                     {
                         currentBet = 40;
                         hasBet = true;
                     }
 
-                    else if (bet100Rect.Contains(mouseState.Position))
+                    else if (mouseState.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Released && bet100Rect.Contains(mouseState.Position))
                     {
                         currentBet = 100;
                         hasBet = true;
                     }
 
-                    if (highRect.Contains(mouseState.Position))
+                    if (mouseState.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Released && highRect.Contains(mouseState.Position))
                     {
-                        if (hasBet && highRect.Contains(mouseState.Position))
+                        if (hasBet)
                         {
                             int randomCard = rng.Next(0, 36);
 
@@ -364,9 +378,9 @@ namespace ICS3U_Final_Project_European_Roulette
 
                     }
 
-                    if (lowRect.Contains(mouseState.Position))
+                    if (mouseState.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Released && lowRect.Contains(mouseState.Position))
                     {
-                        if (hasBet && lowRect.Contains(mouseState.Position))
+                        if (hasBet)
                         {
                             int randomCard = rng.Next(0, 36);
 
@@ -391,19 +405,19 @@ namespace ICS3U_Final_Project_European_Roulette
                         }
                     }
 
+                    else if (mouseState.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Released)
+                    {
+
+                        if (proceedRect.Contains(mouseState.Position))
+                        {
+                            currentScreen = Screen.Exit;
+                        }
+
+                    }
 
                 }
 
-
-
-
-
             }
-
-
-
-
-
 
             base.Update(gameTime);
         }
@@ -426,13 +440,14 @@ namespace ICS3U_Final_Project_European_Roulette
             {
                 _spriteBatch.Draw(letterTexture, letterRect, Color.White);
                 _spriteBatch.Draw(invitationTexture, invitationRect, Color.White);
-                _spriteBatch.Draw(proceedTexture, proceedRect, Color.White);               
+                _spriteBatch.Draw(proceedTexture, proceedRect, Color.White);
             }
 
             else if (currentScreen == Screen.Ballroom)
             {
                 _spriteBatch.Draw(ballroomTexture, ballroomRect, Color.White);
                 _spriteBatch.Draw(proceedTexture, proceedRect, Color.White);
+                _spriteBatch.Draw(riddle1Texture, riddle1Rect, Color.White);
             }
 
             else if (currentScreen == Screen.Main)
@@ -460,14 +475,22 @@ namespace ICS3U_Final_Project_European_Roulette
 
                 //Bet
 
-                _spriteBatch.DrawString( font,"Money: $" + money, new Vector2(20, 500),Color.Gold);
+                _spriteBatch.DrawString(font, "Money: $" + money, new Vector2(20, 500), Color.Gold);
 
                 _spriteBatch.DrawString(font, "Bet: $" + currentBet, new Vector2(20, 540), Color.White);
 
                 _spriteBatch.Draw(cardFrameTexture, cardFrameRect, Color.White);
+
+                _spriteBatch.Draw(proceedTexture, proceedRect, Color.White);
+
             }
 
-        
+            else if (currentScreen == Screen.Exit)
+            {
+                _spriteBatch.Draw(exitTexture, exitRect, Color.White);
+            }
+
+
             else if (currentScreen == Screen.Howtoplay)
             {
                 _spriteBatch.Draw(howtoplayTexture, howtoplayRect, Color.White);
@@ -479,8 +502,6 @@ namespace ICS3U_Final_Project_European_Roulette
                 _spriteBatch.Draw(blackwoodcastleTexture, blackwoodcastleRect, Color.White);
                 _spriteBatch.Draw(gobackTexture, gobackRect, Color.White);
             }
-
-
 
             _spriteBatch.End();
 
