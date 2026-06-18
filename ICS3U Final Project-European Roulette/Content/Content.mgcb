@@ -13,6 +13,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin adeckofcards.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:adeckofcards.png
+
 #begin arabian.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -547,6 +559,18 @@
 /processorParam:TextureFormat=Color
 /build:card_spades_10.png
 
+#begin chance.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:chance.png
+
 #begin end.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -733,6 +757,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:swanlake.wav
+
+#begin thefoursuits.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:thefoursuits.png
 
 #begin X:/My Drive/Downloads/arabian.wav
 /importer:WavImporter
