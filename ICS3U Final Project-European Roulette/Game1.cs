@@ -447,7 +447,6 @@ namespace ICS3U_Final_Project_European_Roulette
             {
                 _spriteBatch.Draw(ballroomTexture, ballroomRect, Color.White);
                 _spriteBatch.Draw(proceedTexture, proceedRect, Color.White);
-                _spriteBatch.Draw(riddle1Texture, riddle1Rect, Color.White);
             }
 
             else if (currentScreen == Screen.Main)
