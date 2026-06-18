@@ -547,6 +547,12 @@
 /processorParam:TextureFormat=Color
 /build:card_spades_10.png
 
+#begin end.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:end.wav
+
 #begin exit.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -727,6 +733,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:swanlake.wav
+
+#begin X:/My Drive/Downloads/arabian.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:X:/My Drive/Downloads/arabian.wav;arabian.wav
 
 #begin X:/My Drive/Downloads/ballroom.png
 /importer:TextureImporter
