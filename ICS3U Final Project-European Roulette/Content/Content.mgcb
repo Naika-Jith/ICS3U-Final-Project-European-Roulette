@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin arabian.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:arabian.wav
+
 #begin begin the night.png
 /importer:TextureImporter
 /processor:TextureProcessor
