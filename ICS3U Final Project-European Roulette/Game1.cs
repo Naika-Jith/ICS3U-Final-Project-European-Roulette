@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ICS3U_Final_Project_European_Roulette
 {
@@ -26,7 +27,9 @@ namespace ICS3U_Final_Project_European_Roulette
 
         Rectangle window;
 
+        
 
+      
 
         List<Texture2D> Cards;
 
@@ -37,6 +40,8 @@ namespace ICS3U_Final_Project_European_Roulette
         int money = 100;
 
         int currentBet = 0;
+
+        int currentRiddle;
 
         bool showCard = false;
         bool hasBet = false;
@@ -108,9 +113,63 @@ namespace ICS3U_Final_Project_European_Roulette
         Texture2D riddle1Texture;
         Rectangle riddle1Rect;
 
+        Texture2D riddle2Texture;
+        Rectangle riddle2Rect;
+
+        Texture2D riddle3Texture;
+        Rectangle riddle3Rect;
+
+        // Riddle Answers (Correct)
+        Texture2D adeckofcardsTexture;
+        Rectangle adeckofcardsRect;
+
+        Texture2D chanceTexture;
+        Rectangle chanceRect;
+
+        Texture2D luckTexture;
+        Rectangle luckRect;
+
+        //Riddle Answers (Wrong) 
+        Texture2D thefoursuitsTexture;
+        Rectangle thefoursuitsRect;
+
+        Texture2D fateTexture;
+        Rectangle fateRect;
+
+        Texture2D destinyTexture;
+        Rectangle destinyRect;
+
+        Texture2D quitTexture;
+        Rectangle quitRect;
+
+
         //Other
         Texture2D invitationTexture;
         Rectangle invitationRect;
+
+        //Music
+        SoundEffect introMusic;
+        SoundEffect swanLakeMusic;
+        SoundEffect endMusic;
+
+        SoundEffect currentMusic;
+        SoundEffectInstance musicInstance;
+        SoundEffect lastMusic;
+
+        void PlayMusic(SoundEffect sound)
+        {
+            if (lastMusic == sound)
+                return;
+
+            lastMusic = sound;
+
+            if (musicInstance != null)
+                musicInstance.Stop();
+
+            musicInstance = sound.CreateInstance();
+            musicInstance.IsLooped = true;
+            musicInstance.Play();
+        }
 
         public Game1()
         {
@@ -148,6 +207,17 @@ namespace ICS3U_Final_Project_European_Roulette
             //Riddles
 
             riddle1Rect = new Rectangle(119, 100, 700, 290);
+            riddle2Rect = new Rectangle(119, 100, 700, 290);
+            riddle3Rect = new Rectangle(119, 100, 700, 290);
+
+            adeckofcardsRect = new Rectangle(150, 420, 250, 80);
+            thefoursuitsRect = new Rectangle(520, 420, 250, 80);
+
+            chanceRect = new Rectangle(150, 420, 250, 80);
+            fateRect = new Rectangle(520, 420, 250, 80);
+
+            luckRect = new Rectangle(150, 420, 250, 80);
+            destinyRect = new Rectangle(520, 420, 250, 80);
 
             //Main Game
 
@@ -160,12 +230,13 @@ namespace ICS3U_Final_Project_European_Roulette
             cardRect = new Rectangle(350, 100, 300, 330);
 
             // buttons under card
-            highRect = new Rectangle(70, 300, 500, 450);
-            lowRect = new Rectangle(260, 190, 500, 450);
+            highRect = new Rectangle(250, 470, 180, 100);
+            lowRect = new Rectangle(500, 470, 180, 100);
             cardFrameRect = new Rectangle(405, 115, 193, 309);
 
             //Other
             invitationRect = new Rectangle(0, 0, 670, 500);
+            quitRect = new Rectangle(625, 0, 325, 115);
 
             base.Initialize();
         }
@@ -181,6 +252,7 @@ namespace ICS3U_Final_Project_European_Roulette
             letterTexture = Content.Load<Texture2D>("letter");
             ballroomTexture = Content.Load<Texture2D>("ballroom");
             exitTexture = Content.Load<Texture2D>("exit");
+            quitTexture = Content.Load<Texture2D>("quit");
 
 
             beginthenightTexture = Content.Load<Texture2D>("begin the night");
@@ -199,12 +271,33 @@ namespace ICS3U_Final_Project_European_Roulette
             //Riddles
 
             riddle1Texture = Content.Load<Texture2D>("riddle1");
+            riddle2Texture = Content.Load<Texture2D>("riddle2");
+            riddle3Texture = Content.Load<Texture2D>("riddle3");
+
+            //Riddle Answers (Correct)
+
+            adeckofcardsTexture = Content.Load<Texture2D>("adeckofcards");
+            chanceTexture = Content.Load<Texture2D>("chance");
+            luckTexture = Content.Load<Texture2D>("luck");
+
+            //Riddle Answers (Wrong)
+
+            thefoursuitsTexture = Content.Load<Texture2D>("thefoursuits");
+            fateTexture = Content.Load<Texture2D>("fate");
+            destinyTexture = Content.Load<Texture2D>("destiny");
 
             //font
             font = Content.Load<SpriteFont>("font");
 
             //Other
             invitationTexture = Content.Load<Texture2D>("invitation");
+
+            //Muisc
+            introMusic = Content.Load<SoundEffect>("arabian");
+            swanLakeMusic = Content.Load<SoundEffect>("swanlake");
+            endMusic = Content.Load<SoundEffect>("end");
+
+
 
             //Cards
 
@@ -268,6 +361,26 @@ namespace ICS3U_Final_Project_European_Roulette
             previousMouse = mouseState;
             mouseState = Mouse.GetState();
 
+            if (currentScreen == Screen.Intro)
+            {
+                PlayMusic(introMusic);
+            }
+            else if (currentScreen == Screen.Letter)
+            {
+                PlayMusic(introMusic); // or arabian
+            }
+            else if (currentScreen == Screen.Ballroom)
+            {
+                PlayMusic(swanLakeMusic);
+            }
+            else if (currentScreen == Screen.Main)
+            {
+                PlayMusic(introMusic);
+            }
+            else if (currentScreen == Screen.Exit)
+            {
+                PlayMusic(endMusic);
+            }
             this.Window.Title = mouseState.Position.ToString();
 
             if (currentScreen == Screen.Intro)
@@ -316,15 +429,60 @@ namespace ICS3U_Final_Project_European_Roulette
             {
                 if (mouseState.LeftButton == ButtonState.Pressed & previousMouse.LeftButton == ButtonState.Released && proceedRect.Contains(mouseState.Position))
                 {
-                    currentScreen = Screen.Ballroom;
+                    if (mouseState.LeftButton == ButtonState.Pressed & previousMouse.LeftButton == ButtonState.Released && proceedRect.Contains(mouseState.Position))
+                    {
+                        currentRiddle = rng.Next(1, 4);
+                        currentScreen = Screen.Ballroom;
+                    }
                 }
             }
 
             else if (currentScreen == Screen.Ballroom)
             {
-                if (mouseState.LeftButton == ButtonState.Pressed & previousMouse.LeftButton == ButtonState.Released && proceedRect.Contains(mouseState.Position))
+              
+
+                if (mouseState.LeftButton == ButtonState.Pressed && previousMouse.LeftButton == ButtonState.Released)
                 {
-                    currentScreen = Screen.Main;
+                    // RIDDLE 1
+                    if (currentRiddle == 1)
+                    {
+                        if (adeckofcardsRect.Contains(mouseState.Position))
+                        {
+                            currentScreen = Screen.Main;
+                        }
+
+                        if (thefoursuitsRect.Contains(mouseState.Position))
+                        {
+                            currentRiddle = rng.Next(1, 4);
+                        }
+                    }
+
+                    // RIDDLE 2
+                    else if (currentRiddle == 2)
+                    {
+                        if (chanceRect.Contains(mouseState.Position))
+                        {
+                            currentScreen = Screen.Main;
+                        }
+                        if (fateRect.Contains(mouseState.Position))
+                        {
+                            currentRiddle = rng.Next(1, 4);
+                        }
+                    }
+
+                    // RIDDLE 3
+                    else if (currentRiddle == 3)
+                    {
+                        if (luckRect.Contains(mouseState.Position))
+                        {
+                            currentScreen = Screen.Main;
+                        }
+
+                        if (destinyRect.Contains(mouseState.Position))
+                        {
+                            currentRiddle = rng.Next(1, 4);
+                        }
+                    }
                 }
             }
 
@@ -416,7 +574,13 @@ namespace ICS3U_Final_Project_European_Roulette
                     }
 
                 }
-
+                else if (currentScreen == Screen.Exit)
+                    if (mouseState.LeftButton == ButtonState.Pressed &&
+    previousMouse.LeftButton == ButtonState.Released &&
+    quitRect.Contains(mouseState.Position))
+                    {
+                        Exit();
+                    }
             }
 
             base.Update(gameTime);
@@ -445,8 +609,34 @@ namespace ICS3U_Final_Project_European_Roulette
 
             else if (currentScreen == Screen.Ballroom)
             {
-                _spriteBatch.Draw(ballroomTexture, ballroomRect, Color.White);
-                _spriteBatch.Draw(proceedTexture, proceedRect, Color.White);
+                if (currentScreen == Screen.Ballroom)
+                {
+                    _spriteBatch.Draw(ballroomTexture, ballroomRect, Color.White);
+
+                    if (currentRiddle == 1)
+                    {
+                        _spriteBatch.Draw(riddle1Texture, riddle1Rect, Color.White);
+
+                        _spriteBatch.Draw(adeckofcardsTexture, adeckofcardsRect, Color.White);
+                        _spriteBatch.Draw(thefoursuitsTexture, thefoursuitsRect, Color.White);
+                    }
+
+                    else if (currentRiddle == 2)
+                    {
+                        _spriteBatch.Draw(riddle2Texture, riddle2Rect, Color.White);
+
+                        _spriteBatch.Draw(chanceTexture, chanceRect, Color.White);
+                        _spriteBatch.Draw(fateTexture, fateRect, Color.White);
+                    }
+
+                    else if (currentRiddle == 3)
+                    {
+                        _spriteBatch.Draw(riddle3Texture, riddle3Rect, Color.White);
+
+                        _spriteBatch.Draw(luckTexture, luckRect, Color.White);
+                        _spriteBatch.Draw(destinyTexture, destinyRect, Color.White);
+                    }
+                }
             }
 
             else if (currentScreen == Screen.Main)
@@ -487,6 +677,14 @@ namespace ICS3U_Final_Project_European_Roulette
             else if (currentScreen == Screen.Exit)
             {
                 _spriteBatch.Draw(exitTexture, exitRect, Color.White);
+                _spriteBatch.Draw(quitTexture, quitRect, Color.White);
+
+                _spriteBatch.DrawString(
+                    font,
+                    "Final Money: $" + money,
+                    new Vector2(28, 72),
+                    Color.Gold
+                );
             }
 
 
